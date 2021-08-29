@@ -1,53 +1,48 @@
 import User from "../../models/User";
 
-import express, {Request, Response, Application, Router} from 'express';
+import express, {Request, Response, Router, NextFunction} from 'express';
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import ErrorResponse from "../../utils/ErrorResponse";
+import asyncHandler from "../../middlewares/async";
 
 
 const router: Router = express.Router();
 
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     
     const { email, password } = req.body;
 
-    try {
-        // if user exists
-        let user = await User.findOne(({ email }));
-        if(!user){
-            return res.status(400).json({ errors: [ { msg: 'Invalid Credentials.' } ] })
-        }
+    let user = await User.findOne(({ email }));
 
-        const isMatch = await bcrypt.compare(password, user.password);
+    if(!user){
+        return next(new ErrorResponse('Invalid Credentials.', 422))
+    }
 
-        if (!isMatch){
-            return res.status(400).json({ errors: [ { msg: 'Invalid Credentials.' } ] })
-        }
+    const isMatch = await bcrypt.compare(password, user.password);
 
-        const payload = {
-            user: {
-                id: user.id
-            }
+    if (!isMatch){
+        return next(new ErrorResponse('Invalid Credentials.', 422))
+    }
+
+    const payload = {
+        user: {
+            id: user.id
         }
-        const JWTSecretKey: any = process.env["jwtSecret"]
-        jwt.sign(payload, JWTSecretKey, { expiresIn: 360000 },
+    }
+    const JWTSecretKey: any = process.env["jwtSecret"]
+    return jwt.sign(payload, JWTSecretKey, { expiresIn: 360000 },
         (err, token) => {
             if(err) {
-                throw err
+                return next(new ErrorResponse(err.message, 422))
             }
-            res.json({ token }); 
-                
-        });
+            res.json({ success: true, token }); 
+            
+    });
 
-    }
-    catch(err: any){
-        console.error(err.message);
-        res.status(500).send('Server error.');
-    }
 
-})
-
+}))
 
 export default router;

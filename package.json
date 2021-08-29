@@ -1,5 +1,5 @@
 {
-  "name": "card-server",
+  "name": "ts-server-example",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",

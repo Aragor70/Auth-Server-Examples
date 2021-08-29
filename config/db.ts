@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { connect } from 'mongoose';
 
 
 const db: any = process.env.mongoPublicURI;
@@ -11,7 +11,7 @@ const options: any = {
 export default async () => {
     try {
         const conn: any = await connect(db, options);
-        console.log(`Ciao, MongoDB connected... `);
+        console.log(`MongoDB connected... `);
         console.log(conn.connection.host)
     } catch(err: any){
         console.error(err.message);

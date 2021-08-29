@@ -11,8 +11,7 @@ interface User {
 const UserSchema = new Schema<User>({
 
     name: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,
