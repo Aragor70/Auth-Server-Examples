@@ -23,7 +23,7 @@ Rename "config/config.env.env" to "config/config.env" and update environment set
 
 ```
 npm install
-npm build
+npm run build
 ```
 
 Run App in development environment
