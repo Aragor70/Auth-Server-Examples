@@ -1,4 +1,4 @@
-# TS-Server-Example
+# Auth-Server-Examples
 
 
 Version to implement a server side of application.
