@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/controllers/auth/auth.controller';
 
 @Module({
   imports: [
@@ -15,8 +17,9 @@ import { AppService } from './app.service';
       password: process.env.PSQL_PASSWORD,
       database: process.env.PSQL_DATABASE,
       autoLoadEntities: true,
-      synchronize: true
-    })
+      synchronize: true,
+    }),
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
