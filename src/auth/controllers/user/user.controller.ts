@@ -40,7 +40,7 @@ import { UserService } from 'src/auth/services/user/user.service';
     ): Observable<{ modifiedFileName: string } | { error: string }> {
       const fileName = file?.filename;
   
-      if (!fileName) return of({ error: 'File must be a png, jpg/jpeg' });
+      if (!fileName) return of({ error: 'File must be a png, jpg' });
   
       const imagesFolderPath = join(process.cwd(), 'images');
       const fullImagePath = join(imagesFolderPath + '/' + file.filename);
@@ -67,7 +67,7 @@ import { UserService } from 'src/auth/services/user/user.service';
       const userId = req.user.id;
       return this.userService.findImageNameByUserId(userId).pipe(
         switchMap((imageName: string) => {
-          return of(res.sendFile(imageName, { root: './images' }));
+          return of(res.sendFile(imageName || "Mikolaj.png", { root: './images' }));
         }),
       );
     }
