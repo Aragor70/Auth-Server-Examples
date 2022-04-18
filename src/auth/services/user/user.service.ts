@@ -16,7 +16,7 @@ export class UserService {
 
   findUserById(id: number): Observable<User> {
     return from(
-      this.userRepository.findOne({ id }, { relations: ['feedPosts'] }),
+      this.userRepository.findOne({ id }),
     ).pipe(
       map((user: User) => {
         if (!user) {
